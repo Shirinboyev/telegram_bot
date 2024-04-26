@@ -16,7 +16,7 @@ public class MyBot extends TelegramLongPollingBot {
         try {
 
 
-
+            System.out.println("Start");
             Long myChatid = 1712225965L;
             SendMessage sendMessage = new SendMessage();
             execute(sendMessage);
