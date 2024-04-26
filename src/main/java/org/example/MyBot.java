@@ -10,35 +10,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyBot extends TelegramLongPollingBot {
+    String name;
+    String lastname;
+    String STATE = "START";
+
     @Override
     public void onUpdateReceived(Update update) {
-
         try {
-            Long user1 = 5980239060L ;
-            Long user2 = 1712225965L ;
-
-            Long chatId = update.getMessage().getChatId();
             String text = update.getMessage().getText();
+            Long chatId = update.getMessage().getChatId();
 
-            if(chatId.equals(user1)){
-
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(user2);
-            sendMessage.setText(text);
-            execute(sendMessage);
-
-            }else if(chatId.equals(user2)){
-
+            if(text.equals("/start")){
                 SendMessage sendMessage = new SendMessage();
-                sendMessage.setChatId(user1);
-                sendMessage.setText(text);
+                sendMessage.setText("Assalomu alekum! Botga xush kelibsiz\nIltimos ismingizni kiriting 😌");
+                sendMessage.setChatId(chatId);
                 execute(sendMessage);
-
+                STATE = "ENTER_FIRSTNAME";
+            } else {
+                if (STATE.equals("ENTER_FIRSTNAME")) {
+                    name = text;
+                    SendMessage sendMessage = new SendMessage();
+                    sendMessage.setText("Iltimos familiyangizni kiriting 😌");
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                    STATE = "ENTER_LASTNAME";
+                } else if (STATE.equals("ENTER_LASTNAME")) {
+                    lastname = text;
+                    SendMessage sendMessage = new SendMessage();
+                    sendMessage.setText("Siz ro'yxatdan o'tdingiz 🥳\n" +
+                                        "Sizga qanday yordam bera olamiz");
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                    STATE = "REGISTERED";
+                } else if (STATE.equals("REGISTERED")) {
+                    SendMessage sendMessage = new SendMessage();
+                    sendMessage.setText("Iltimos Admin Javobini Kuting 😌");
+                    Thread.sleep(1000);
+                    System.out.println("Lekin senga hech kim javob bermaydi 🤣🤣🤣 ");
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                }
             }
-
-        } catch (Exception e) {
+        } catch (TelegramApiException e) {
+        } catch (InterruptedException e) {
         }
-
     }
 
     @Override
