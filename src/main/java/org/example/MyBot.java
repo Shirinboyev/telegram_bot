@@ -14,17 +14,29 @@ public class MyBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
         try {
+            Long user1 = 5980239060L ;
+            Long user2 = 1712225965L ;
 
+            Long chatId = update.getMessage().getChatId();
+            String text = update.getMessage().getText();
 
-            System.out.println("Start");
-            Long myChatid = 1712225965L;
+            if(chatId.equals(user1)){
+
             SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(user2);
+            sendMessage.setText(text);
             execute(sendMessage);
 
+            }else if(chatId.equals(user2)){
 
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setChatId(user1);
+                sendMessage.setText(text);
+                execute(sendMessage);
 
+            }
 
-        } catch (TelegramApiException e) {
+        } catch (Exception e) {
         }
 
     }
