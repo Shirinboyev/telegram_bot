@@ -10,49 +10,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyBot extends TelegramLongPollingBot {
-    String name;
-    String lastname;
-    String STATE = "START";
-
+    List<TelegramState> users = new ArrayList<>();
     @Override
     public void onUpdateReceived(Update update) {
         try {
             String text = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
 
+            TelegramState currentUser = null;
+            for (TelegramState user : users) {
+                if (user.getChatId().equals(chatId)) {
+                    currentUser = user;
+                }
+            }
+            if(currentUser == null) {
+                currentUser = new TelegramState();
+                currentUser.setChatId(chatId);
+                users.add(currentUser);
+            }
+
+
             if(text.equals("/start")){
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setText("Assalomu alekum! Botga xush kelibsiz\nIltimos ismingizni kiriting 😌");
                 sendMessage.setChatId(chatId);
                 execute(sendMessage);
-                STATE = "ENTER_FIRSTNAME";
+                currentUser.setSTATE(UserState.ENTER_FIRSTNAME);
             } else {
-                if (STATE.equals("ENTER_FIRSTNAME")) {
-                    name = text;
+                if (currentUser.getSTATE().equals(UserState.ENTER_FIRSTNAME)) {
+                    currentUser.setName(text);
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setText("Iltimos familiyangizni kiriting 😌");
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
-                    STATE = "ENTER_LASTNAME";
-                } else if (STATE.equals("ENTER_LASTNAME")) {
-                    lastname = text;
+                    currentUser.setSTATE(UserState.ENTER_LASTNAME);
+                } else if (currentUser.getSTATE().equals(UserState.ENTER_LASTNAME)) {
+                    currentUser.setName(text);
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setText("Siz ro'yxatdan o'tdingiz 🥳\n" +
                                         "Sizga qanday yordam bera olamiz");
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
-                    STATE = "REGISTERED";
-                } else if (STATE.equals("REGISTERED")) {
+                    currentUser.setSTATE(UserState.REGISTERED);
+                } else if (currentUser.getSTATE().equals(UserState.REGISTERED)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setText("Iltimos Admin Javobini Kuting 😌");
-                    Thread.sleep(1000);
                     System.out.println("Lekin senga hech kim javob bermaydi 🤣🤣🤣 ");
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
                 }
             }
         } catch (TelegramApiException e) {
-        } catch (InterruptedException e) {
         }
     }
 
