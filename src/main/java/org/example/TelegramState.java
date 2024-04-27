@@ -2,41 +2,37 @@ package org.example;
 
 public class TelegramState {
     private Long chatId;
-    private String name;
-    private String lastname;
-    private String STATE = "START";
+    private String state;
+    private User user = new User();
+    private String selectedProduct;
 
-    public TelegramState(String lastname, String name, String STATE) {
-        this.lastname = lastname;
-        this.name = name;
-        this.STATE = STATE;
+
+    public TelegramState(Long chatId, String state) {
+        this.chatId = chatId;
+        this.state = state;
+    }
+
+    public String getSelectedProduct() {
+        return selectedProduct;
+    }
+
+    public TelegramState(String selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public void setSelectedProduct(String selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public TelegramState() {
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSTATE() {
-        return STATE;
-    }
-
-    public void setSTATE(String STATE) {
-        this.STATE = STATE;
     }
 
     public Long getChatId() {
@@ -45,5 +41,13 @@ public class TelegramState {
 
     public void setChatId(Long chatId) {
         this.chatId = chatId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
