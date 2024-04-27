@@ -27,12 +27,23 @@ public class MyBot extends TelegramLongPollingBot {
             ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
             replyKeyboardMarkup.setKeyboard(rows);
 
-            KeyboardButton button = new KeyboardButton();
-
             KeyboardRow row = new KeyboardRow();
+            KeyboardRow row1 = new KeyboardRow();
+
+            KeyboardButton button = new KeyboardButton();
+            button.setText("Button 1");
+
+            KeyboardButton button1 = new KeyboardButton();
+            button1.setText("Button 2");
+
+            KeyboardButton button2 = new KeyboardButton();
+            button2.setText("Button 3");
+
             row.add(button);
-            button.setText("Musiqa");
+            row.add(button1);
+            row1.add(button2);
             rows.add(row);
+            rows.add(row1);
 
             sendMessage.setReplyMarkup(replyKeyboardMarkup);
             execute(sendMessage);
